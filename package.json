@@ -1,0 +1,24 @@
+{
+  "name": "express-https-vhost",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evmizulin/express-https-vhost.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evmizulin/express-https-vhost/issues"
+  },
+  "homepage": "https://github.com/evmizulin/express-https-vhost#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "express-vhost": "^0.2.0",
+    "letsencrypt-express": "^2.0.6"
+  }
+}
