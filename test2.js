@@ -1,7 +1,7 @@
 const letsencrypt = require('letsencrypt-express')
 const express = require('express')
 const evh = require('express-vhost')
-const redirect = require('./test2')
+const redirect = require('./src/redirect')
 
 const server = express()
 
