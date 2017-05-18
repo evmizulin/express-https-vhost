@@ -25,10 +25,13 @@ module.exports = function(options) {
             server: prod ? 'https://acme-v01.api.letsencrypt.org/directory' : 'staging',
             email: email,
             agreeTos: true,
-            approveDomains: apps.map(item => item.host)
+            approveDomains: apps.map(item => item.host),
+            app: server
         })
 
-        http.createServer(lex.middleware(redirect)).listen(80)
-        https.createServer(lex.httpsOptions, lex.middleware(server)).listen(443)
+        lex.listen(80, 443)
+
+        // http.createServer(lex.middleware(redirect)).listen(80)
+        // https.createServer(lex.httpsOptions, lex.middleware(server)).listen(443)
     }
 }

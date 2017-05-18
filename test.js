@@ -7,11 +7,11 @@ const server = require('./index')({
 const appOne = express()
 const appTwo = express()
 
-appOne.get('*', (req, res) => {
+appOne.use('/', (req, res) => {
     res.status(200).send('i am app one')
 })
 
-appTwo.get('*', (req, res) => {
+appTwo.use('/', (req, res) => {
     res.status(200).send('i am app two')
 })
 
@@ -23,5 +23,5 @@ server([
     {
         host: 'api.photo-mosaic.ru',
         app: appTwo
-    },
+    }
 ])
