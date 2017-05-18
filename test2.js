@@ -1,16 +1,19 @@
 const letsencrypt = require('letsencrypt-express')
 const express = require('express')
 const evh = require('express-vhost')
-const redirect = require('redirect-https')()
+const redirect = require('./test2')
 
 const server = express()
+
+server.set('trust proxy', true)
+server.use(redirect)
+server.use(evh.vhost(server.enabled('trust proxy')))
+
 const appOne = express()
 const appTwo = express()
 
 appOne.use('/', (req, res) => res.status(200).send('i am app one'))
 appTwo.use('/', (req, res) => res.status(200).send('i am app two'))
-
-server.use(evh.vhost(server.enabled('trust proxy')))
 
 evh.register('photo-mosaic.ru', appOne)
 evh.register('api.photo-mosaic.ru', appTwo)
