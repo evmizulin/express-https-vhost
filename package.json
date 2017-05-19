@@ -1,7 +1,14 @@
 {
   "name": "express-https-vhost",
   "version": "1.0.0",
-  "description": "",
+  "description": "Serve several sites on one machine with https",
+  "keywords": [
+    "several sites on one machine",
+    "vhost",
+    "express",
+    "https",
+    "letsencrypt"
+  ],
   "main": "index.js",
   "scripts": {},
   "repository": {
