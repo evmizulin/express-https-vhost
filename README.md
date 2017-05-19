@@ -3,30 +3,34 @@
 ## usage
 ```
 const express = require('express')
-const server = require('express-https-vhost')({
-    email: 'some@email.com',
-    prod: true
-})
+const server = require('express-https-vhost')
 
 const appOne = express()
 const appTwo = express()
 
-appOne.get('*', (req, res) => {
+appOne.use('/', (req, res) => {
     res.status(200).send('i am app one')
 })
 
-appTwo.get('*', (req, res) => {
+appTwo.use('/', (req, res) => {
     res.status(200).send('i am app two')
 })
 
-server([
+server(
     {
-        host: 'domain.com',
-        app: appOne
+        email: 'myemail@mail.com',
+        prod: false
     },
-    {
-        host: 'api.domain.com',
-        app: appTwo
-    },
-])
+    [
+        {
+            host: 'site.com',
+            app: appOne,
+            aliases: ['www.site.com']
+        },
+        {
+            host: 'api.site.com',
+            app: appTwo
+        }
+    ]
+)
 ```
