@@ -1,7 +1,6 @@
 const letsencrypt = require('letsencrypt-express')
 const express = require('express')
 const evh = require('express-vhost')
-const https = require('https')
 const wwwRedirect = require('./wwwRedirect')
 const httpRedirect = require('./httpRedirect')
 
@@ -37,9 +36,9 @@ module.exports = function(options, apps) {
         email: email,
         agreeTos: true,
         approveDomains: approveDomains,
-        // app: httpsServer
+        app: httpsServer
     })
 
-    https.createServer(lex.httpsOptions, lex.middleware(httpsServer)).listen(443)
+    lex.listen([], [443])
     httpServer.listen(80)
 }
