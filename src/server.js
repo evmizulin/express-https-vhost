@@ -1,17 +1,22 @@
 const letsencrypt = require('letsencrypt-express')
 const express = require('express')
 const evh = require('express-vhost')
-const redirect = require('./redirect')
+const wwwRedirect = require('./wwwRedirect')
+const httpRedirect = require('./httpRedirect')
 
 module.exports = function(options, apps) {
     const email = options.email
     const prod = options.prod
 
-    const server = express()
+    const httpServer = express()
+    const httpsServer = express()
 
-    server.set('trust proxy', true)
-    server.use(redirect)
-    server.use(evh.vhost(server.enabled('trust proxy')))
+    httpServer.set('trust proxy', true)
+    httpServer.use(httpRedirect)
+
+    httpsServer.set('trust proxy', true)
+    httpsServer.use(wwwRedirect)
+    httpsServer.use(evh.vhost(httpsServer.enabled('trust proxy')))
 
     let approveDomains = []
 
@@ -31,8 +36,9 @@ module.exports = function(options, apps) {
         email: email,
         agreeTos: true,
         approveDomains: approveDomains,
-        app: server
+        app: httpsServer
     })
 
-    lex.listen(80, 443)
+    lex.listen(443)
+    httpServer.listen(80)
 }
