@@ -19,6 +19,9 @@ appTwo.use('/', (req, res) => {
 server(
     {
         email: 'myemail@mail.com',
+        // flag switching between production and staging servers of letsencript
+        // use "prod: false" first. 
+        // Read more https://www.npmjs.com/package/letsencrypt-express#why-you-must-use-staging-first
         prod: false
     },
     [
