@@ -1,37 +1,38 @@
 const letsencrypt = require('letsencrypt-express')
 const express = require('express')
 const evh = require('express-vhost')
-const http = require('http')
-const https = require('https')
-const redirect = require('redirect-https')()
+const redirect = require('./redirect')
 
-module.exports = function(options) {
+module.exports = function(options, apps) {
     const email = options.email
     const prod = options.prod
 
-    return (apps) => {
-        const server = express()
+    const server = express()
 
-        server.use(evh.vhost(server.enabled('trust proxy')))
+    server.set('trust proxy', true)
+    server.use(redirect)
+    server.use(evh.vhost(server.enabled('trust proxy')))
 
-        apps.forEach(ref => {
-            const host = ref.host
-            const app = ref.app
+    let approveDomains = []
 
-            evh.register(host, app)
-        })
+    apps.forEach(ref => {
+        const host = ref.host
+        const aliases = ref.aliases || []
+        const app = ref.app
 
-        const lex = letsencrypt.create({
-            server: prod ? 'https://acme-v01.api.letsencrypt.org/directory' : 'staging',
-            email: email,
-            agreeTos: true,
-            approveDomains: apps.map(item => item.host),
-            app: server
-        })
+        approveDomains.push(host)
+        approveDomains = approveDomains.concat(aliases)
 
-        lex.listen(80, 443)
+        evh.register(host, app)
+    })
 
-        // http.createServer(lex.middleware(redirect)).listen(80)
-        // https.createServer(lex.httpsOptions, lex.middleware(server)).listen(443)
-    }
+    const lex = letsencrypt.create({
+        server: prod ? 'https://acme-v01.api.letsencrypt.org/directory' : 'staging',
+        email: email,
+        agreeTos: true,
+        approveDomains: approveDomains,
+        app: server
+    })
+
+    lex.listen(80, 443)
 }

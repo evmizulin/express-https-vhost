@@ -1,8 +1,5 @@
 const express = require('express')
-const server = require('./index')({
-    email: 'some@email.com',
-    prod: false
-})
+const server = require('./index')
 
 const appOne = express()
 const appTwo = express()
@@ -15,13 +12,20 @@ appTwo.use('/', (req, res) => {
     res.status(200).send('i am app two')
 })
 
-server([
+server(
     {
-        host: 'photo-mosaic.ru',
-        app: appOne
+        email: 'evgeny.mizulin@gmail.com',
+        prod: false
     },
-    {
-        host: 'api.photo-mosaic.ru',
-        app: appTwo
-    }
-])
+    [
+        {
+            host: 'photo-mosaic.ru',
+            app: appOne,
+            aliases: ['www.photo-mosaic.ru']
+        },
+        {
+            host: 'api.photo-mosaic.ru',
+            app: appTwo
+        }
+    ]
+)
