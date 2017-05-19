@@ -1,5 +1,7 @@
 # express-https-vhost
 
+Serve several sites on one machine with https
+
 ## usage
 ```
 const express = require('express')
