@@ -2,15 +2,24 @@ const letsencrypt = require('letsencrypt-express')
 const express = require('express')
 const evh = require('express-vhost')
 const wwwRedirect = require('./wwwRedirect')
+const compression = require('compression')
 
 module.exports = function(options, apps) {
     const email = options.email
     const prod = options.prod
+    const isCompression = options.compression || false
+    const isWwwRedirect = options.wwwRedirect || false
 
     const httpsServer = express()
-
     httpsServer.set('trust proxy', true)
-    httpsServer.use(wwwRedirect)
+
+    if (isCompression) {
+        httpsServer.use(compression())
+    }
+    if (isWwwRedirect) {
+        httpsServer.use(wwwRedirect)
+    }
+
     httpsServer.use(evh.vhost(httpsServer.enabled('trust proxy')))
 
     let approveDomains = []

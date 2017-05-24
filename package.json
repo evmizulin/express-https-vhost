@@ -22,12 +22,13 @@
   },
   "homepage": "https://github.com/evmizulin/express-https-vhost#readme",
   "dependencies": {
+    "compression": "^1.6.2",
     "express": "^4.15.3",
     "express-vhost": "^0.2.0",
     "letsencrypt-express": "^2.0.6"
   },
-  "engines" : {
-    "node" : "^6.10.3"
+  "engines": {
+    "node": "^6.10.3"
   },
-  "engineStrict" : true
+  "engineStrict": true
 }
